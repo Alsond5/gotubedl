@@ -25,7 +25,7 @@ go get github.com/Alsond5/gotubedl
 To use Gotubedl, use the following code:
 
 ```go
-yt, err := gotubedl.Init("https://www.youtube.com/watch?v=1uPr9a-Dnt0")
+yt, err := gotubedl.Init("https://www.youtube.com/watch?v=un6ZyFkqFKo")
 
 if err != nil {
     fmt.Println(err)
