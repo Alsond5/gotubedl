@@ -1,4 +1,4 @@
-package youtube
+package gotubedl
 
 import (
 	"encoding/json"
@@ -10,9 +10,9 @@ import (
 	"strconv"
 	"strings"
 
-	"gotubedl/extract"
-	"gotubedl/query"
-	"gotubedl/stream"
+	"github.com/Alsond5/gotubedl/extract"
+	"github.com/Alsond5/gotubedl/query"
+	"github.com/Alsond5/gotubedl/stream"
 )
 
 type YouTube struct {

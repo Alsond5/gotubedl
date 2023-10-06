@@ -1,4 +1,4 @@
-package youtube
+package gotubedl
 
 import (
 	"encoding/json"
@@ -71,35 +71,39 @@ func Search(query string) ([]SearchQuery, error) {
 			continue
 		}
 
-		title, ok := videoRenderer["title"].(map[string]interface{})["runs"].([]interface{})
-
-		if !ok || len(title) == 0 {
-			continue
-		}
-
-		titleText, ok := title[0].(map[string]interface{})["text"].(string)
-
-		if !ok {
-			continue
-		}
-
-		video_url := videoRenderer["videoId"].(string)
-		video_url = fmt.Sprintf("https://www.youtube.com/watch?v=%s", video_url)
-
-		thumbnail := videoRenderer["thumbnail"].(map[string]interface{})["thumbnails"].([]interface{})[0].(map[string]interface{})["url"].(string)
-
-		lengthText := videoRenderer["lengthText"].(map[string]interface{})["simpleText"].(string)
-
-		author := videoRenderer["longBylineText"].(map[string]interface{})["runs"].([]interface{})[0].(map[string]interface{})["text"].(string)
-
-		videos = append(videos, SearchQuery{
-			Url:        video_url,
-			Title:      titleText,
-			Thumbnail:  thumbnail,
-			LengthText: lengthText,
-			Author:     author,
-		})
+		videos = append(videos, create(videoRenderer))
 	}
 
 	return videos, nil
+}
+
+func create(videoRenderer map[string]interface{}) SearchQuery {
+	title, ok := videoRenderer["title"].(map[string]interface{})["runs"].([]interface{})
+
+	if !ok || len(title) == 0 {
+		return SearchQuery{}
+	}
+
+	titleText, ok := title[0].(map[string]interface{})["text"].(string)
+
+	if !ok {
+		return SearchQuery{}
+	}
+
+	video_url := videoRenderer["videoId"].(string)
+	video_url = fmt.Sprintf("https://www.youtube.com/watch?v=%s", video_url)
+
+	thumbnail := videoRenderer["thumbnail"].(map[string]interface{})["thumbnails"].([]interface{})[0].(map[string]interface{})["url"].(string)
+
+	lengthText := videoRenderer["lengthText"].(map[string]interface{})["simpleText"].(string)
+
+	author := videoRenderer["longBylineText"].(map[string]interface{})["runs"].([]interface{})[0].(map[string]interface{})["text"].(string)
+
+	return SearchQuery{
+		Url:        video_url,
+		Title:      titleText,
+		Thumbnail:  thumbnail,
+		LengthText: lengthText,
+		Author:     author,
+	}
 }

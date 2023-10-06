@@ -2,7 +2,8 @@ package query
 
 import (
 	"errors"
-	"gotubedl/stream"
+
+	"github.com/Alsond5/gotubedl/stream"
 )
 
 type StreamQuery struct {

@@ -8,7 +8,7 @@ import (
 	"strings"
 	"sync"
 
-	"gotubedl/extract"
+	"github.com/Alsond5/gotubedl/extract"
 )
 
 type Stream struct {
@@ -128,34 +128,6 @@ func (s *Stream) downloadChunk(client *http.Client, from, to int64, wg *sync.Wai
 		Index int64
 		Chunk []byte
 	}{Index: index, Chunk: chunk}
-}
-
-func (s *Stream) ReturnChunk(client *http.Client, from, to int64) []byte {
-	req, err := http.NewRequest("GET", s.Url, nil)
-
-	if err != nil {
-		fmt.Println("Error creating request:", err)
-		return nil
-	}
-
-	req.Header.Set("Range", fmt.Sprintf("bytes=%d-%d", from, to))
-
-	res, err := client.Do(req)
-
-	if err != nil {
-		fmt.Println("Error making request:", err)
-		return nil
-	}
-	defer res.Body.Close()
-
-	chunk, err := io.ReadAll(res.Body)
-
-	if err != nil {
-		fmt.Println("Error reading response body:", err)
-		return nil
-	}
-
-	return chunk
 }
 
 func (s *Stream) Download(filename string, filePath string, numChunks int) (string, error) {
